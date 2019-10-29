@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+    id "io.freefair.lombok" version "4.1.3"
+    id 'org.springframework.boot' version '2.2.0.RELEASE'
+}
+
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
+
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    cimplementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+}

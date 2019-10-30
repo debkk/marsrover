@@ -1,0 +1,4 @@
+mars.cache.dir:       '/tmp/'
+mars.photo.seedFile:  '/dates.txt'
+nasa.client.apikey:     'DEMO_KEY'
+nasa.client.dateFormat: "YYYY-MM-dd"

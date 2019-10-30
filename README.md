@@ -24,10 +24,12 @@ As a Mars enthusiest I want to be able to programatically download pictures from
 In keeping with the design principle of separatation of duties, solution consists of two projects, one **marsrover-server** for the server side handling of photos, and the other **marsrover-client** for the display of photos served via an API.
 
 ### marsrover-server
-Purpose of this project is to serve and access Mars Rover photos. It is a simple Java 8 Spring Boot application using quality of life annotations from lombok.
+Purpose of this project is to serve and access Mars Rover photos. It is a simple Java 8 Spring Boot application using quality of life annotations from lombok. 
+See project readme for details
 
 ### marsover-client
 Purpose of this project is to utilize the server-side api to display photos. It is a simple React with redux single-page app. For simplicity and speed I'm using [create-react-app] to bootstrap.
+See project readme for details.
 
 [create-react-app]: https://github.com/facebook/create-react-app
 [NASA API]: https://api.nasa.gov/

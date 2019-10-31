@@ -4,7 +4,7 @@ Simple Java 8 Spring boot REST API to download and serve Mars Rover photos using
 
 ## REST API endpoints
 
-* `GET /api/v1/photo?[earth_date=ACCEPTED_DATE_FORMAT][&rover=ROVER_NAME]` - retrives and caches photos. If date is not given, uses seeded dates. If rover is not given defaults to Curiosity
+* `GET /api/v1/photo?[earthDate=ACCEPTED_DATE_FORMAT][&rover=ROVER_NAME]` - retrives and caches photos. If date is not given, uses seeded dates. If rover is not given defaults to Curiosity
 * `GET /api/v1/photo/{PHOTO_ID}?imgSrc=URI` - returns the photo image
 * `POST /api/v1/photo/seed` - reloads photos from seed date list
 * `DELETE /api/v1/photo` - deletes cache

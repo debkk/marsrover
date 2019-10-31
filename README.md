@@ -1,8 +1,6 @@
 # marsrover exercise
 code exercise for https://github.com/hawkescom/marsrover
 
-Deborah Kimnach - dkimnach@gmail.com
-
 ## Summary
 Use the [NASA API] to build a project in GitHub that calls the Mars Rover API and selects a picture on a given day. We want your application to download and store each image locally.
 

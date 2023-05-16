@@ -1,5 +1,6 @@
 package marsrover.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,11 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
+@Slf4j
 public class DateService {
 
-    private Logger logger = LoggerFactory.getLogger(DateService.class);
-
-    private String[] acceptedFormats = {
+    private final String[] acceptedFormats = {
             "yyyy-MM-dd",
             "MM/dd/yy",
             "MMMM d, yyyy",
@@ -28,7 +28,7 @@ public class DateService {
         try {
             parsed = DateUtils.parseDateStrictly(earthDate, acceptedFormats);
         } catch (ParseException e) {
-            logger.error("Invalid date {}: {}", earthDate, e.getMessage());
+            log.error("Invalid date {}: {}", earthDate, e.getMessage());
         }
 
         return parsed;

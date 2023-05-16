@@ -1,8 +1,8 @@
 package marsrover.service;
 
 import lombok.RequiredArgsConstructor;
-import marsrover.entity.Photo;
-import marsrover.external.NasaRestClient;
+import marsrover.config.CacheProps;
+import marsrover.external.NasaFeignClient;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,28 +14,25 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CachingService {
 
-    private final NasaRestClient nasaRestClient;
+    private final NasaFeignClient nasaRestClient;
 
-    @Value("${mars.cache.dir}")
-    private String IMAGE_CACHE_DIR;
-    private final static String CACHE_EXT = ".marsdat";
+    private final CacheProps cacheProps;
+    private static final String CACHE_EXT = ".marsdat";
 
     public File cachePhoto(String imgSrc) throws IOException {
 
         String sha = DigestUtils.sha512Hex(imgSrc);
-        String photoFileName = IMAGE_CACHE_DIR + sha + CACHE_EXT;
+        String photoFileName = cacheProps.getDir() + sha + CACHE_EXT;
 
-        File file;
+        File file = null;
         // check if downloaded
         if (Paths.get(photoFileName).toFile().exists()) {
             file = Paths.get(photoFileName).toFile();
@@ -52,13 +49,17 @@ public class CachingService {
     }
 
     public void clearCachedPhotos() {
-        List<File> files = Arrays.stream(Paths.get(IMAGE_CACHE_DIR).toFile().listFiles((d, s) -> s.toLowerCase().endsWith(CACHE_EXT))).collect(Collectors.toList());
-        files.forEach(File::delete);
+
+        Optional<File[]> cacheFiles = Optional.ofNullable(Paths.get(cacheProps.getDir()).toFile().listFiles((d, s) -> s.toLowerCase().endsWith(CACHE_EXT)));
+        if (cacheFiles.isPresent()) {
+            List<File> files = Arrays.stream(cacheFiles.get()).toList();
+            files.forEach(File::delete);
+        }
     }
 
     public File getCachedPhoto(String imgSrc) throws IOException {
         String sha = DigestUtils.sha512Hex(imgSrc);
-        String photoFileName = IMAGE_CACHE_DIR + sha;
+        String photoFileName = cacheProps.getDir() + sha;
 
         File file;
         if (Paths.get(photoFileName).toFile().exists()) {

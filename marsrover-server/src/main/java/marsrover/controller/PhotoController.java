@@ -1,6 +1,8 @@
 package marsrover.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import marsrover.config.PhotoProps;
 import marsrover.entity.Photo;
 import marsrover.entity.Rover;
 import marsrover.service.DateService;
@@ -24,20 +26,18 @@ import java.util.stream.Stream;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/photo")
+@Slf4j
 public class PhotoController {
 
     private final PhotoService photoService;
     private final DateService dateService;
 
-    @Value("${mars.photo.seedFile}")
-    private String seedFile;
-
-    private Logger logger = LoggerFactory.getLogger(PhotoController.class);
+    private final PhotoProps photoProps;
 
     private void seedPhotos() throws IOException {
-        if (!StringUtils.isEmpty(seedFile)) {
+        if (!StringUtils.isEmpty(photoProps.getSeedFile())) {
             // read in dates
-            try (InputStream inputStream = getClass().getResourceAsStream(seedFile);
+            try (InputStream inputStream = getClass().getResourceAsStream(photoProps.getSeedFile());
                  Stream<String> stream = new BufferedReader(new InputStreamReader(inputStream)).lines()) {
                 stream.forEach(date -> {
                     Date earthDate = dateService.parseDate(date);
@@ -47,7 +47,7 @@ public class PhotoController {
                             photoService.getPhotosByDate(Rover.RoverName.Opportunity, earthDate);
                             photoService.getPhotosByDate(Rover.RoverName.Spirit, earthDate);
                         } catch (IOException e) {
-                            logger.error("Unable to cache photos", e);
+                            log.error("Unable to cache photos", e);
                         }
                     }
                 });
@@ -58,7 +58,7 @@ public class PhotoController {
     }
 
     @GetMapping
-    public List<Photo> getPhotos(@RequestParam String earthDate,
+    public ResponseEntity<List<Photo>> getPhotos(@RequestParam String earthDate,
                                  @RequestParam(required = false) Rover.RoverName rover) {
         List<Photo> photos;
         Date date = dateService.parseDate(earthDate);
@@ -76,7 +76,7 @@ public class PhotoController {
             throw new HttpClientErrorException(HttpStatus.UNPROCESSABLE_ENTITY, "Unable to cache photos: " + e.getMessage());
         }
 
-        return photos;
+        return ResponseEntity.ok(photos);
     }
 
     @GetMapping("/{id}")

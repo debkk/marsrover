@@ -16,7 +16,7 @@
 	<properties>
 		<java.version>19</java.version>
 		<lombok.version>1.18.26</lombok.version>
-		<apache-commons-lang.version>3.12.0</apache-commons-lang.version>
+		<apache-commons-lang.version>3.18.0</apache-commons-lang.version>
 		<apache-directory-studio-codec.version>1.8</apache-directory-studio-codec.version>
 		<spring-cloud.version>2022.0.2</spring-cloud.version>
 	</properties>
